@@ -3,6 +3,9 @@ package com.jd.jdmall.controller;
 import com.jd.jdmall.model.User;
 import com.jd.jdmall.repository.UserRepository;
 import com.jd.jdmall.util.JwtUtil;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -14,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/auth")
+@Tag(name = "用户管理", description = "用户相关的API")
 public class AuthController {
 
     @Autowired
@@ -29,7 +33,8 @@ public class AuthController {
     private PasswordEncoder passwordEncoder;
 
     @PostMapping("/login")
-    public String login(@RequestParam String username, @RequestParam String password) {
+    @Operation(summary = "登录", description = "返回JWT")
+    public String login(@Parameter(description = "用户名", required = true)@RequestParam String username, @Parameter(description = "密码", required = true)@RequestParam String password) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(username, password));
         SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -37,7 +42,8 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public String register(@RequestParam String username, @RequestParam String password) {
+    @Operation(summary = "注册", description = "返回是否成功")
+    public String register(@Parameter(description = "用户名", required = true)@RequestParam String username, @Parameter(description = "密码", required = true)@RequestParam String password) {
         User user = new User();
         user.setUsername(username);
         user.setPassword(passwordEncoder.encode(password));
