@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -39,6 +40,14 @@ public class AuthController {
                 new UsernamePasswordAuthenticationToken(username, password));
         SecurityContextHolder.getContext().setAuthentication(authentication);
         return jwtUtil.generateToken((UserDetails) authentication.getPrincipal());
+    }
+
+    @PostMapping("/logout")
+    @Operation(summary = "退出登录", description = "返回是否成功")
+    public ResponseEntity<String> logout(@RequestHeader("Authorization") String token) {
+        String jwt = token.substring(7); // 去掉 "Bearer " 前缀
+        jwtUtil.blacklistToken(jwt);
+        return ResponseEntity.ok("Logged out successfully");
     }
 
     @PostMapping("/register")
