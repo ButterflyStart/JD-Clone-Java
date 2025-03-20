@@ -1,5 +1,6 @@
 package com.jd.jdmall.model;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import lombok.Data;
 import java.util.Set;
@@ -28,3 +29,4 @@ public class User {
     )
     private Set<Role> roles;
 }
+
