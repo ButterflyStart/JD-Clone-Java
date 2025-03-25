@@ -41,6 +41,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/admin/**").hasRole("ADMIN") // 仅允许 ADMIN 角色访问
                         .requestMatchers("/api/user/**").hasRole("USER") // 仅允许 USER 角色访问
                         .requestMatchers("/api/public").permitAll() // 放行公共 API
+                        .requestMatchers("/api/public/**").permitAll() // 放行公共 API
                         .anyRequest().authenticated())
 //                .httpBasic(Customizer.withDefaults()) // 使用 HTTP Basic 认证
 //                .logout(logout -> logout

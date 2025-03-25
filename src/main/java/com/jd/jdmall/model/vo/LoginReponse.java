@@ -2,14 +2,14 @@ package com.jd.jdmall.model.vo;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
-@Schema(description = "登录请求参数")
-public class LoginRequest {
+@Schema(description = "登录响应参数")
+public class LoginReponse{
 
     @Schema(description = "用户名", required = true, example = "admin")
     private String username;
 
-    @Schema(description = "密码", required = true, example = "123456")
-    private String password;
+    @Schema(description = "JWT", required = true, example = "123456")
+    private String jwt;
 
     // Getter 和 Setter 方法
     public String getUsername() {
@@ -20,12 +20,11 @@ public class LoginRequest {
         this.username = username;
     }
 
-    public String getPassword() {
-        return password;
+    public String getjwt() {
+        return jwt;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setjwt(String jwt) {
+        this.jwt = jwt;
     }
 }
-

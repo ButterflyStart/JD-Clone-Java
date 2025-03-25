@@ -1,5 +1,6 @@
 package com.jd.jdmall.controller;
 
+import com.jd.jdmall.model.vo.LoginReponse;
 import com.jd.jdmall.model.vo.LoginRequest;
 import com.jd.jdmall.model.User;
 import com.jd.jdmall.model.vo.RegisterRequest;
@@ -82,14 +83,19 @@ public class AuthController {
             @ApiResponse(responseCode = "200", description = "登录成功"),
             @ApiResponse(responseCode = "401", description = "用户名或密码错误")
     })
-    public ApiResponseMy<String> login(@RequestBody ApiRequestMy<LoginRequest> loginRequest) {
+    public ApiResponseMy<LoginReponse> login(@RequestBody ApiRequestMy<LoginRequest> loginRequest) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginRequest.getData().getUsername(), loginRequest.getData().getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         String jwt = jwtUtil.generateToken((UserDetails) authentication.getPrincipal());
         if (!jwt.isEmpty()) {
-            return new ApiResponseMy<>(200, "登录成功！", jwt);
+
+            LoginReponse loginReponse = new LoginReponse();
+            loginReponse.setUsername(loginRequest.getData().getUsername());
+            loginReponse.setjwt(jwt);
+
+            return new ApiResponseMy<>(200, "登录成功！", loginReponse);
         } else {
             return new ApiResponseMy<>(401, "登录失败！用户名或密码错误。", null);
         }
